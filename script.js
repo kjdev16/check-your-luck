@@ -22,7 +22,6 @@ if (localStorage.getItem('highscore')) {
 scoreElement.textContent = scoreValue;
 
 function checkNumber() {
-  console.log('Checking Number...');
 
   if (userInput.value > 20) {
     messageBox.textContent = 'Please enter a number less than 20.';
