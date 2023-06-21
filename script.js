@@ -35,7 +35,7 @@ function checkNumber() {
   if (randomNumber == userInput.value) {
     messageBox.textContent = 'Right!';
     main.style.backgroundColor = '#68B984';
-    
+
     if (scoreValue > highscoreValue) {
       highscoreValue = scoreValue;
       highscoreElement.textContent = highscoreValue;
@@ -69,7 +69,7 @@ function checkNumber() {
 
 function resetGame() {
   randomNumber = Math.floor(Math.random() * 20);
-  main.style.backgroundColor = '#222';
+  main.style.backgroundColor = '#333';
   messageBox.textContent = 'Start Guessing...';
   scoreValue = 20;
   scoreElement.textContent = scoreValue;
@@ -82,8 +82,13 @@ function clearHighscore() {
   highscoreElement.textContent = highscoreValue;
 }
 
-checkButton.addEventListener('click', checkNumber); // Add event listener for checking the number
+function handleEnterKeyPress(event) {
+  if (event.key === 'Enter') {
+    checkNumber();
+  }
+}
 
-againButton.addEventListener('click', resetGame); // Add event listener for resetting the game
-
-clearHighscoreButton.addEventListener('click', clearHighscore); // Add event listener for clearing the high score
+checkButton.addEventListener('click', checkNumber);
+againButton.addEventListener('click', resetGame);
+clearHighscoreButton.addEventListener('click', clearHighscore);
+userInput.addEventListener('keydown', handleEnterKeyPress);
