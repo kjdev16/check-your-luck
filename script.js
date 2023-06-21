@@ -70,7 +70,7 @@ function checkNumber() {
 function resetGame() {
   randomNumber = Math.floor(Math.random() * 20);
   console.log(randomNumber); // Log the new reset number
-  main.style.backgroundColor = '#333';
+  main.style.backgroundColor = '#222';
   messageBox.textContent = 'Start Guessing...';
   scoreValue = 20;
   scoreElement.textContent = scoreValue;
