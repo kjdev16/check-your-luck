@@ -1,4 +1,4 @@
-let randomNumber = Math.floor(Math.random() * 20);
+let randomNumber = Math.floor(Math.random() * 20) + 1; // Ensure 1-20 range
 console.log(randomNumber);
 
 const checkButton = document.getElementById('check');
@@ -13,7 +13,7 @@ const clearHighscoreButton = document.getElementById('clearHighscore');
 let scoreValue = 20;
 let highscoreValue = 0;
 
-// Initialize the highscore
+// Load highscore from localStorage
 if (localStorage.getItem('highscore')) {
   highscoreValue = parseInt(localStorage.getItem('highscore'));
   highscoreElement.textContent = highscoreValue;
@@ -22,17 +22,15 @@ if (localStorage.getItem('highscore')) {
 scoreElement.textContent = scoreValue;
 
 function checkNumber() {
+  let guess = parseInt(userInput.value);
 
-  if (userInput.value > 20) {
-    messageBox.textContent = 'Please enter a number less than 20.';
+  if (isNaN(guess) || guess < 1 || guess > 20) {
+    messageBox.textContent = 'Enter a number between 1 and 20.';
     return;
   }
-  if (userInput.value < 1) {
-    messageBox.textContent = 'Please enter a number greater than 1.';
-    return;
-  }
-  if (randomNumber == userInput.value) {
-    messageBox.textContent = 'Right!';
+
+  if (guess === randomNumber) {
+    messageBox.textContent = 'Correct! 🎉';
     main.style.backgroundColor = '#68B984';
 
     if (scoreValue > highscoreValue) {
@@ -40,35 +38,29 @@ function checkNumber() {
       highscoreElement.textContent = highscoreValue;
       localStorage.setItem('highscore', highscoreValue);
     }
-
     return;
   }
 
-  scoreValue--;
+  // Score deduction based on difference
+  let difference = Math.abs(randomNumber - guess);
+  let deduction = difference >= 10 ? 5 : difference >= 5 ? 3 : 1; // Higher penalty for bigger mistakes
+
+  scoreValue = Math.max(scoreValue - deduction, 0); // Prevent negative scores
   scoreElement.textContent = scoreValue;
 
   if (scoreValue === 0) {
-    messageBox.textContent = 'You have lost the game! Click on Again.';
+    messageBox.textContent = 'Game Over! Click "Again" to restart.';
     main.style.backgroundColor = '#D23369';
     return;
   }
 
-  if (randomNumber > userInput.value) {
-    messageBox.textContent = 'Too Low';
-    main.style.backgroundColor = '#CE7777';
-    return;
-  }
-
-  if (randomNumber < userInput.value) {
-    messageBox.textContent = 'Too High';
-    main.style.backgroundColor = '#CE7777';
-    return;
-  }
+  messageBox.textContent = guess < randomNumber ? 'Too Low! 📉' : 'Too High! 📈';
+  main.style.backgroundColor = '#CE7777';
 }
 
 function resetGame() {
-  randomNumber = Math.floor(Math.random() * 20);
-  console.log(randomNumber); // Log the new reset number
+  randomNumber = Math.floor(Math.random() * 20) + 1; // Ensure 1-20 range
+  console.log(randomNumber);
   main.style.backgroundColor = '#222';
   messageBox.textContent = 'Start Guessing...';
   scoreValue = 20;
